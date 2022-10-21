@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+<input type="file" accept=".heic,image/x-icon,image/bmp,image/jpeg,image/png,image/tiff,image/webp" onchange="showBlob(this)">
+</body>
+  <script>
+    function showBlob(input){
+      fetch("https://lens.google.com/_/upload/?ep=ccm&upload_id=ADPycds18kOBDiZMwA32coVP7PY3DZjm5TnoSodV6F-hboU6aGkDd8G6IZaFqiVmVEAS_oZmpqi3gTw2IrH8SQvuR7IVsccPBOaq&upload_protocol=resumable", {
+  "headers": {
+    "accept": "*/*",
+    "accept-language": "vi,en-US;q=0.9,en;q=0.8",
+    "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+    "sec-ch-ua": "\"Google Chrome\";v=\"105\", \"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"105\"",
+    "sec-ch-ua-arch": "\"x86\"",
+    "sec-ch-ua-bitness": "\"64\"",
+    "sec-ch-ua-full-version": "\"105.0.5195.125\"",
+    "sec-ch-ua-full-version-list": "\"Google Chrome\";v=\"105.0.5195.125\", \"Not)A;Brand\";v=\"8.0.0.0\", \"Chromium\";v=\"105.0.5195.125\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-model": "",
+    "sec-ch-ua-platform": "\"Linux\"",
+    "sec-ch-ua-platform-version": "\"5.4.0\"",
+    "sec-ch-ua-wow64": "?0",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-origin",
+    "x-client-data": "CK61yQEIirbJAQiltskBCKmdygEI/eLKAQiUocsBCKC8zAEI9bzMAQjiy8wBCIrdzAEIrN/MAQjE4cwBCMPkzAE=",
+    "x-client-side-image-upload": "true",
+    "x-goog-upload-command": "upload, finalize",
+    "x-goog-upload-offset": "0"
+  },
+  "referrer": "https://lens.google.com/",
+  "referrerPolicy": "origin",
+  "body":"",
+  "method": "POST",
+  "mode": "cors",
+  "credentials": "include"
+});
+    }
+
+  </script>
+</html>
