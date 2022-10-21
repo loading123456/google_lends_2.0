@@ -3,15 +3,15 @@ const fs = require('fs');
 
 let imgPaths = []
 let outData = {};
-let pos = 0;
+let pageId = 0;
 let status ;
-let isLoad = false;
 let finishPages = 0;
-const pages = 1;
+const pages = 3;
 const regex = /...wrb.fr.+generic.../g;
 
 
 (async () => {
+    console.time("answer time");
     imgPaths = fs.readdirSync('images');
     if(fs.existsSync('status.txt')){
         status = JSON.parse(fs.readFileSync('status.txt'));
@@ -29,11 +29,16 @@ async function createPages(){
     await browser.newContext({locale: "vi-VI"})
 
     for(let pageId=0; pageId<pages; pageId++){
+        console.log("Page: ",pageId, " open")
+        let isLoad = false;
+
         const page = await browser.contexts()[0].newPage()
         
-        page.on('filechooser', async function onFilechooser(fileChooser) { 
+        page.on('filechooser',function onFilechooser(fileChooser) { 
             if(status[pageId] < imgPaths.length){
                 page.locator('[type="file"]').setInputFiles(`images/${imgPaths[status[pageId]]}`)
+            } else{
+                isFinish();
             }
         })   
 
@@ -55,15 +60,14 @@ async function createPages(){
                     for(let i=0; i<arr3L; i++){
                         outData[imgPaths[status[pageId]]].push([arr3[i], arr4[step+i][2][0][5][3][1]])
                     }
+                    console.log("   Page: ", pageId, " - Image: ", imgPaths[status[pageId]], ' status: ',status[pageId])
                     status[pageId] += pages;
                     if(status[pageId] < imgPaths.length){
                         isLoad = false;
                         page.locator('[type="file"]').setInputFiles(`images/${imgPaths[status[pageId]]}`);
-                    } else{
-                        finishPages += 1;
-                        if(finishPages == pages){
-                            saveData();
-                        }
+                    } 
+                    else{
+                        isFinish();
                     }
                   }
                 }
@@ -77,11 +81,18 @@ async function createPages(){
     }
 }
 
-
+function isFinish(){
+    finishPages += 1;
+    if(finishPages==pages){
+        console.log("End")
+        saveData();
+    }
+}
 
 function saveData(){
     fs.writeFileSync('result.txt', JSON.stringify(outData))
     fs.writeFileSync('status.txt', JSON.stringify(status))
+    console.timeEnd("answer time");
     process.exit()
 }
 
